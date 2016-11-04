@@ -1,0 +1,15 @@
+name: kave
+version: 0.0.1
+
+authors:
+  - Jeremy Woertink <jeremywoertink@gmail.com>
+
+license: MIT
+
+development_dependencies:
+  kemal:
+    github: sdogruyol/kemal
+    branch: master
+  spec-kemal:
+    github: sdogruyol/spec-kemal
+    branch: master
