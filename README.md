@@ -2,6 +2,8 @@
 
 This shards makes it easier to version your [Kemal](http://kemalcr.com/) API
 
+**WARNING:** experimental stage. Nothing really works yet...
+
 ## Installation
 
 
