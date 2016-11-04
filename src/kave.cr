@@ -11,4 +11,8 @@ module Kave
   def self.configuration
     @@configuration
   end
+
+  def self.get(path, &block : HTTP::Server::Context -> _)
+    Kave::DSL.add_route("GET", path, &block)
+  end
 end
