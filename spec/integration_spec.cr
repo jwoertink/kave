@@ -9,6 +9,7 @@ describe "SampleApp" do
   end
 
   it "returns This is a private route" do
+    Kave.configure {|c| c.strategy = :path }
     get "/v1/"
     response.body.should eq "This is a private route"
   end

@@ -1,9 +1,5 @@
 ENV["KEMAL_ENV"] = "test"
 
-Kave.configure do |c|
-  c.strategy = :path
-end
-
 get "/" do
   "This is a public route"
 end
