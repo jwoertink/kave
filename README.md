@@ -24,18 +24,27 @@ require "kemal"
 require "kave"
 
 Kave.configure do |c|
-  c.strategy = :bearer
-  c.token_model = Kave::AuthToken
+  c.strategy = :path # see Strategies below for more options
 end
 
 get "/" do |env|
   "This is a public route"
 end
 
-Kave.get "/" do |env|
-  "This is a private route only accessed through the API"
+api("v1") do
+  get "/" do |env|
+    "This is a private route only accessed through the version 1 API"
+  end
+end
+
+api("v2") do
+  get "/" do |env|
+    "This is a private route only accessed through the version 2 API"
+  end
 end
 ```
+
+### Strategies
 
 ## Development
 
