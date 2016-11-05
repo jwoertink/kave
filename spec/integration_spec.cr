@@ -8,10 +8,17 @@ describe "SampleApp" do
     response.body.should eq "This is a public route"
   end
 
-  it "returns This is a private route" do
+  it "returns for both v1 and v2 routes" do
     Kave.configure {|c| c.strategy = :path }
     get "/v1/"
-    response.body.should eq "This is a private route"
+    response.body.should eq "This is a private route v1"
+    get "/v2/"
+    response.body.should eq "This is a private route v2"
   end
 
+  it "fails for an invalid version route" do
+    Kave.configure {|c| c.strategy = :path}
+    get "/v3/"
+    response.status_code.should eq 404
+  end
 end

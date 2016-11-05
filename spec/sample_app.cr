@@ -4,8 +4,16 @@ get "/" do
   "This is a public route"
 end
 
-Kave.get "/" do
-  "This is a private route"
+api("v1") do
+  get "/" do
+    "This is a private route v1"
+  end
+end
+
+api("v2") do
+  get "/" do
+    "This is a private route v2"
+  end
 end
 
 Kemal.run

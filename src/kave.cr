@@ -11,8 +11,9 @@ module Kave
   def self.configuration
     @@configuration
   end
+end
 
-  def self.get(path, &block : HTTP::Server::Context -> _)
-    Kave::DSL.add_route("GET", path, &block)
-  end
+# Global scope
+def api(version : String)
+  with Kave::DSL.new(version) yield
 end

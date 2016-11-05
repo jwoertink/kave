@@ -1,15 +1,18 @@
 module Kave
   class DSL
-    @@stored_routes = [] of Tuple(String, String)
+    property version
     
-    def self.add_route(http_method : String, path : String, &block : HTTP::Server::Context -> _)
-      @@stored_routes << {http_method, path}
-      case Kave.configuration.strategy
-      when :path
-        path = ["/", "v#{Kave.configuration.current_version}", path].join
-      end
-
-      Kemal::RouteHandler::INSTANCE.add_route(http_method, path, &block)
+    def initialize(@version : String)
     end
+
+    {% for method in %w(get post put patch delete) %}
+      def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
+        if Kave.configuration.strategy == :path
+          path = ["/", version, path].join
+        end
+
+        Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
+      end
+    {% end %}
   end
 end
