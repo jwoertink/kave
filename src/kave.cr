@@ -11,6 +11,10 @@ module Kave
   def self.configuration
     @@configuration
   end
+
+  def self.reset_config!
+    @@configuration = Config.new
+  end
 end
 
 # Global scope

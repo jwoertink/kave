@@ -1,6 +1,7 @@
 require "./spec_helper"
 require "./sample_app"
 
+# NOTE: These are specs based on the ./sample_app.cr
 describe "SampleApp" do
 
   it "returns This is a public route" do
@@ -9,7 +10,6 @@ describe "SampleApp" do
   end
 
   it "returns for both v1 and v2 routes" do
-    Kave.configure {|c| c.strategy = :path }
     get "/v1/"
     response.body.should eq "This is a private route v1"
     get "/v2/"
@@ -17,7 +17,6 @@ describe "SampleApp" do
   end
 
   it "fails for an invalid version route" do
-    Kave.configure {|c| c.strategy = :path}
     get "/v3/"
     response.status_code.should eq 404
   end

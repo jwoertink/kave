@@ -1,10 +1,12 @@
 module Kave
   class Config
-    property strategy, token_model
+    property strategy, auth, token_model, format
 
     def initialize
-      @strategy = :bearer
+      @strategy = :path
+      @auth = nil.as(Symbol | Nil)
       @token_model = Kave::AuthToken
+      @format = :json
     end
 
   end
