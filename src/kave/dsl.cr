@@ -19,10 +19,10 @@ module Kave
     # I just need to override the lookup https://github.com/sdogruyol/kemal/blob/master/src/kemal/route_handler.cr#L27
     {% for method in %w(get post put patch delete) %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
-        @stored_routes << {path, {{method}}}
         if Kave.configuration.strategy == :path
           path = ["/", version, path].join
         end
+        @stored_routes << {path, {{method}}}
 
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
