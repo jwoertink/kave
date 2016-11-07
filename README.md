@@ -24,7 +24,11 @@ require "kemal"
 require "kave"
 
 Kave.configure do |c|
-  c.strategy = :path # see Strategies below for more options
+  # These are default config options
+  # c.strategy = :path              # see Strategies below
+  # c.format = :json                # see Formats below
+  # c.auth = nil                    # see Auth below
+  # c.token_model = Kave::AuthToken # see Auth below
 end
 
 get "/" do |env|
@@ -50,34 +54,57 @@ You can configure Kave to handle your API in different ways.
 
 ```crystal
 Kave.configure do |c|
-  c.strategy = :path
+  # Your config options go here
+  # possible options
+  # * strategy - This is how we look up which route you want
+  # * format - This is the format your data is returned in the API
+  # * auth - Authorization for the API
+  # * token_model - The class that will validate the Authorization
 end
-```
 
-To check your current configuration you can use `Kave.configuration` to return the instance of `Kave::Config`
+# Return your Kave config options for later use
+Kave.configuration.strategy #=> :path
+```
 
 ### Strategies
+These are the strategies that you use to query your API routes.
 
-These are the options for `c.strategy` in your configure block
-
-* `:path` - This option prepends the api version to each route. `/users` becomes `/v1/users`
-
-* `:header` - This option checks your route by using special headers
-
-
-### Authorizations
-These options are only for authorizing that the API can be used. Use with `c.auth` in your configure block
-
-* `:bearer` - This option specifies a bearer token which requires a `c.token_model` option to be set.
+By default Kave will use a `:path` strategy where all of your routes are prepended with the version.
 
 ```crystal
-Kave.configure do |c|
-  c.auth = :bearer
-  c.token_model = MyCoolAuthToken
+# assumes stratgy is :path
+api("v1") do
+  get "/users" do |env|
+    [{"id" => 1, "name" => "Jeremy"}]
+  end
 end
 ```
 
-The `token_model` is a class that needs to inherit from `Kave::AuthToken`, and implement the class method `locate`. This `locate` class method should return a string that is your token.
+You would make a call to this route by `http://localhost:3000/v1/users.json`
+
+Additional options later will be `:header`
+
+### Formats
+The formats are how your data will be returned. By default, Kave will assume you're building a JSON API.
+Kave will automatically set your response `Content-Type` to match the type of API you're building. As well as add the appropriate conversion for the blocks so you don't have to type it on every route.
+
+```crystal
+# assumes format is :json
+api("v1") do
+  get "/users/:id" do |env|
+    # Kave will call .to_json on this thing, so it must responds_to?(:to_json)
+    {"id" => env.params.url["id"], "name" => "jeremy"}
+  end
+end
+```
+
+You would make a call to this route by `http://localhost:3000/v1/users/1.json`
+
+Additional options later will be `:xml`, `:msgpack`, `:plain`
+
+### Auth
+
+Not really implemented yet..
 
 ## Development
 
