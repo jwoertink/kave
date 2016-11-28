@@ -8,7 +8,7 @@ license: MIT
 
 development_dependencies:
   kemal:
-    github: sdogruyol/kemal
+    github: kemalcr/kemal
     branch: master
   spec-kemal:
     github: sdogruyol/spec-kemal
