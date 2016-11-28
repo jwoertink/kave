@@ -1,14 +1,14 @@
 module Kave
   class BearerHandler < HTTP::Handler
     BEARER = "Bearer"
-    AUTH = "AUTHORIZATION"
+    AUTH = "Authorization"
     AUTH_MESSAGE = "Unauthorized"
     HEADER_LOGIN_REQUIRED = "Bearer realm=\"Authentication required\""
     def call(context)
-      if context.request.headers[AUTH]?
-        context.request.headers[AUTH].match(/#{BEARER}\s(\w+)$/)
-        if $1? && authorized?($1?)
-          call_next(context)
+      if header = context.request.headers[AUTH]?
+        matched = header.match(/#{BEARER}\s(\w+)$/)
+        if matched && $1 && authorized?($1)
+          return call_next(context)
         end
       end
 
