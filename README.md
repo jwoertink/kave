@@ -6,7 +6,6 @@ This shards makes it easier to version your [Kemal](http://kemalcr.com/) API
 
 ## Installation
 
-
 Add this to your application's `shard.yml`:
 
 ```yaml
@@ -25,9 +24,8 @@ require "kave"
 
 Kave.configure do |c|
   # These are default config options
-  # c.strategy = :path              # see Strategies below
   # c.format = :json                # see Formats below
-  # c.auth = nil                    # see Auth below
+  # c.auth_strategy = nil           # see Auth below
   # c.token_model = Kave::AuthToken # see Auth below
 end
 
@@ -50,50 +48,17 @@ end
 
 ## Configuration Options
 
-You can configure Kave to handle your API in different ways.
-
-```crystal
-Kave.configure do |c|
-  # Your config options go here
-  # possible options
-  # * strategy - This is how we look up which route you want
-  # * format - This is the format your data is returned in the API
-  # * auth - Authorization for the API
-  # * token_model - The class that will validate the Authorization
-end
-
-# Return your Kave config options for later use
-Kave.configuration.strategy #=> :path
-```
-
-### Strategies
-These are the strategies that you use to query your API routes.
-
-By default Kave will use a `:path` strategy where all of your routes are prepended with the version.
-
-```crystal
-# assumes stratgy is :path
-api("v1") do
-  get "/users" do |env|
-    [{"id" => 1, "name" => "Jeremy"}]
-  end
-end
-```
-
-You would make a call to this route by `http://localhost:3000/v1/users.json`
-
-Additional options later will be `:header`
-
 ### Formats
 The formats are how your data will be returned. By default, Kave will assume you're building a JSON API.
-Kave will automatically set your response `Content-Type` to match the type of API you're building. As well as add the appropriate conversion for the blocks so you don't have to type it on every route.
+Kave will automatically set your response `Content-Type` to match the type of API you're building. 
+
+For now, you must handle the data conversion yourself, but eventually Kave will take care of that for you. 
 
 ```crystal
 # assumes format is :json
 api("v1") do
   get "/users/:id" do |env|
-    # Kave will call .to_json on this thing, so it must responds_to?(:to_json)
-    {"id" => env.params.url["id"], "name" => "jeremy"}
+    {"id" => env.params.url["id"], "name" => "jeremy"}.to_json
   end
 end
 ```
@@ -102,9 +67,32 @@ You would make a call to this route by `http://localhost:3000/v1/users/1.json`
 
 Additional options later will be `:xml`, `:msgpack`, `:plain`
 
-### Auth
+### Auth Strategy
+If your API isn't public, then you'll probably want to add some sort of API key. By default, Kave sets the `auth_strategy` to nil, but you can use a Bearer token authorization. To use this, set the `auth_strategy` to `:bearer`, and create a class that inherits from `Kave::AuthToken`. Set the `token_model` to your custom class, and make sure that class implements the class method `locate`.
 
-Not really implemented yet..
+```crystal
+class MyTokenModel < Kave::AuthToken
+  def self.locate(token : String)
+    token == "abc123"
+  end
+end
+
+Kave.configure do |c|
+  c.auth_strategy = :bearer
+  c.token_model = MyTokenModel
+end
+
+api("v1") do
+  get "/users/:id" do |env|
+    {"id" => env.params.url["id"], "name" => "jeremy"}.to_json
+  end
+end
+```
+
+To access this route:
+```text
+$ curl -H "AUTHORIZATION: Bearer abc123" "http://localhost:3000/v1/users/1.json"
+```
 
 ## Development
 
