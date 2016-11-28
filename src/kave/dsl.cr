@@ -15,8 +15,8 @@ module Kave
     #   /v2/users
     #
     # This fails because they look the same
-    #   /users
-    #   /users
+    #   /users # public route
+    #   /users # api route passing v1 header
     # If the second way is using headers, then I should see if I can modify the request
     # A request to /users with API v1 could lookup /v1/users but without any 30X redirect
     # This may be possible because the Radix::Tree doesn't care what the route looks like...
@@ -24,11 +24,9 @@ module Kave
     {% for method in %w(get post put patch delete) %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
         extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
-        if Kave.configuration.strategy == :path
-          path = ["/", version, path, extension].join
-        end
+        path = ["/", version, path, extension].join
         @stored_routes << {path, {{method}}}
-
+      
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
     {% end %}

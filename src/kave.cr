@@ -1,4 +1,5 @@
 require "./kave/*"
+require "./kave/auth_handlers/*"
 
 module Kave
   @@configuration = Config.new

@@ -1,9 +1,6 @@
 require "./spec_helper"
 
 describe Kave::DSL do
-  Spec.before_each do
-    Kave.reset_config!
-  end
   
   it "takes a version" do
     dsl = Kave::DSL.new("v1")

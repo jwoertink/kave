@@ -1,6 +1,9 @@
 module Kave
   abstract class AuthToken
-    def self.locate
+    
+    # If "truthy" then the token has been found.
+    def self.locate(token : String)
+      true
     end
   end
 end

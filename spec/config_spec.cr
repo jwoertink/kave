@@ -4,13 +4,14 @@ class MyAuthModel < Kave::AuthToken; end
 
 describe Kave::Config do
  
-  it "has a default strategy of :path" do
-    Kave.configuration.strategy.should eq :path
+  it "has a default auth_strategy of nil" do
+    Kave.configuration.auth_strategy.should eq nil
   end
 
-  it "assigns the strategy to :header" do
-    Kave.configure { |c| c.strategy = :header }
-    Kave.configuration.strategy.should eq :header
+  it "assigns the auth_strategy to :bearer" do
+    Kave.configure { |c| c.auth_strategy = :bearer }
+    Kave.configuration.auth_strategy.should eq :bearer
+    Kemal::Config::HANDLERS.delete_at(4)
   end
 
   it "has a default token_model of Kave::AuthToken" do

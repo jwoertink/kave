@@ -10,10 +10,10 @@ describe Kave do
 
   describe ".reset_config!" do
     it "resets the configuration back to default settings" do
-      Kave.configure { |c| c.strategy = :bunk }
-      Kave.configuration.strategy.should eq :bunk
+      Kave.configure { |c| c.format = :xml }
+      Kave.configuration.format.should eq :xml
       Kave.reset_config!
-      Kave.configuration.strategy.should eq :path
+      Kave.configuration.format.should eq :json
     end
   end
 end

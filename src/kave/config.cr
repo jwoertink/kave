@@ -1,12 +1,23 @@
 module Kave
   class Config
-    property strategy, auth, token_model, format
+    getter auth_strategy
+    property token_model, format
 
     def initialize
-      @strategy = :path
-      @auth = nil.as(Symbol | Nil)
+      @auth_strategy = nil.as(Symbol | Nil)
       @token_model = Kave::AuthToken
       @format = :json
+    end
+
+    def auth_strategy=(new_strategy : Symbol)
+      strategy = case new_strategy
+      when :bearer
+        add_handler Kave::BearerHandler.new
+        :bearer
+      else
+        nil
+      end
+      @auth_strategy = strategy
     end
 
   end
