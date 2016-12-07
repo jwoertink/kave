@@ -4,7 +4,7 @@ module Kave
     
     def initialize(@version : String, @stored_routes = [] of Tuple(String, String))
       # Setup before block content_type
-      Kemal::Middleware::Filter::INSTANCE.before("ALL", "*") do |env| 
+      Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env| 
         env.response.content_type = Kave::Format::MAPPING[Kave.configuration.format]["content_type"]
       end
     end
