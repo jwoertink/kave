@@ -6,7 +6,8 @@ module Kave
    
     def call(context)
       if @dsl.use_header
-        puts "USING HEADER: #{@dsl.version}"
+        puts "\n\nUSING HEADER: #{@dsl.version}"
+        puts "REQUEST: #{context.request.path}\n\n"
         #process_context(context)
       end
       call_next(context)
