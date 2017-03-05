@@ -4,7 +4,7 @@ module Kave
     property token_model, format
 
     def initialize
-      @auth_strategy = nil.as(Symbol | Nil)
+      @auth_strategy = nil.as(Symbol?)
       @token_model = Kave::AuthToken
       @format = :json
     end
