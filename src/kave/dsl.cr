@@ -1,8 +1,12 @@
 module Kave
   class DSL
     property version, stored_routes
+    property use_header : Bool?
     
     def initialize(@version : String, @stored_routes = [] of Tuple(String, String))
+      # TODO: This probably needs to be somewhere better
+      add_handler Kave::RouteHeaderHandler.new(self)
+      
       # Setup before block content_type
       Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env| 
         env.response.content_type = Kave::Format::MAPPING[Kave.configuration.format]["content_type"]
@@ -10,24 +14,11 @@ module Kave
     end
 
     def initialize(@version : String, header_options : Hash(String, String), @stored_routes = [] of Tuple(String, String))
-
-      # Need to add the path_option config
-      # tell the RouteHeaderHAndler what version this is for
+      @use_header = header_options["path_option"] == "use_header"
       initialize(@version, @stored_routes)
     end
 
-    # thoughts: Kemal can't store 2 routes that look the same
-    # This works because the routes are actually different
-    #   /v1/users 
-    #   /v2/users
-    #
-    # This fails because they look the same
-    #   /users # public route
-    #   /users # api route passing v1 header
-    # If the second way is using headers, then I should see if I can modify the request
-    # A request to /users with API v1 could lookup /v1/users but without any 30X redirect
-    # This may be possible because the Radix::Tree doesn't care what the route looks like...
-    # I just need to override the lookup https://github.com/sdogruyol/kemal/blob/master/src/kemal/route_handler.cr#L27
+    # Copy the same DSL Kemal provides for inside of the API block
     {% for method in %w(get post put patch delete) %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
         extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]

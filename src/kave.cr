@@ -2,6 +2,8 @@ require "./kave/*"
 require "./kave/auth_handlers/*"
 
 module Kave
+  # TODO: allow other formats like xml, etc...
+  ACCEPT_HEADER_REGEX = /\Aapplication\/vnd\.api(\.v([0-9]))?\+json\z/
   @@configuration = Config.new
 
   def self.configure
