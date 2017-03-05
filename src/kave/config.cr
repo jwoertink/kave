@@ -20,5 +20,15 @@ module Kave
       @auth_strategy = strategy
     end
 
+    # This is used to decide how the API route will match
+    #   curl http://localhost:3000/v1/test
+    #       vs
+    #   curl -H "Accept: application/vnd.api.v1+json" http://localhost:3000/test
+    def path_option=(option : String)
+      if option == "use_header"
+        add_handler Kave::RouteHeaderHandler
+      end 
+    end
+
   end
 end

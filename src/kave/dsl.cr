@@ -11,6 +11,8 @@ module Kave
 
     def initialize(@version : String, header_options : Hash(String, String), @stored_routes = [] of Tuple(String, String))
 
+      # Need to add the path_option config
+      # tell the RouteHeaderHAndler what version this is for
       initialize(@version, @stored_routes)
     end
 

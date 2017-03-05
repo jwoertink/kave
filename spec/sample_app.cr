@@ -16,7 +16,7 @@ api("v2") do
   end
 end
 
-api("v3", {"use_accept" => "application/vnd.api.v3+json"}) do
+api("v3", {"path_option" => "use_header"}) do
   get "/users" do
     "This route uses a header request"
   end
