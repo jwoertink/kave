@@ -22,3 +22,7 @@ end
 def api(version : String)
   with Kave::DSL.new(version) yield
 end
+
+def api(version : String, header_options : Hash(String, String))
+  with Kave::DSL.new(version, header_options) yield
+end

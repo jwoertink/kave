@@ -9,6 +9,11 @@ module Kave
       end
     end
 
+    def initialize(@version : String, header_options : Hash(String, String), @stored_routes = [] of Tuple(String, String))
+
+      initialize(@version, @stored_routes)
+    end
+
     # thoughts: Kemal can't store 2 routes that look the same
     # This works because the routes are actually different
     #   /v1/users 

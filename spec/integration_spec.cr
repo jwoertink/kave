@@ -23,10 +23,18 @@ describe "SampleApp" do
       response.body.should eq "This is a private route v2"
     end
 
+    it "returns This route uses a header request" do
+      headers = HTTP::Headers.new
+      headers["Accept"] = "application/vnd.api.v3+json"
+      get "/users.json", headers: headers
+      response.body.should eq "This route uses a header request"
+    end
+
     it "fails for an invalid version route" do
-      get "/v3/users.json"
+      get "/v4/users.json"
       response.status_code.should eq 404
     end
+
   end
 
   context "when testing bearer handler" do
