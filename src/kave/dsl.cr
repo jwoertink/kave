@@ -5,18 +5,12 @@ module Kave
     property use_header : Bool?
     
     def initialize(@version : String)
-      # TODO: This probably needs to be somewhere better
-      add_handler Kave::RouteHeaderHandler.new(self)
-      
-      # Setup before block content_type
-      Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env| 
-        env.response.content_type = Kave::Format::MAPPING[Kave.configuration.format]["content_type"]
-      end
+      setup
     end
 
     def initialize(@version : String, header_options : Hash(String, String))
       @use_header = header_options["path_option"] == "use_header"
-      initialize(@version)
+      setup
     end
 
     # Copy the same DSL Kemal provides for inside of the API block
@@ -29,5 +23,15 @@ module Kave
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
     {% end %}
+
+    private def setup
+      # TODO: This probably needs to be somewhere better
+      add_handler Kave::RouteHeaderHandler.new(self)
+
+      # Setup before block content_type
+      Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env| 
+        env.response.content_type = Kave::Format::MAPPING[Kave.configuration.format]["content_type"]
+      end
+    end
   end
 end
