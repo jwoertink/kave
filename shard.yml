@@ -11,5 +11,5 @@ development_dependencies:
     github: kemalcr/kemal
     branch: master
   spec-kemal:
-    github: sdogruyol/spec-kemal
+    github: kemalcr/spec-kemal
     branch: master
