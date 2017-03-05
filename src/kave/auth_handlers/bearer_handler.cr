@@ -1,6 +1,5 @@
 module Kave
-  class BearerHandler
-    include HTTP::Handler
+  class BearerHandler < Kemal::Handler
     BEARER = "Bearer"
     AUTH = "Authorization"
     AUTH_MESSAGE = "Unauthorized"
