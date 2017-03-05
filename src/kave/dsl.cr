@@ -1,12 +1,10 @@
 module Kave
   class DSL
     property version 
-    property stored_routes
+    property stored_routes = [] of Tuple(String, String)
     property use_header : Bool?
     
     def initialize(@version : String)
-      @stored_routes = [] of Tuple(String, String)
-      
       # TODO: This probably needs to be somewhere better
       add_handler Kave::RouteHeaderHandler.new(self)
       
@@ -17,7 +15,6 @@ module Kave
     end
 
     def initialize(@version : String, header_options : Hash(String, String))
-      @stored_routes = [] of Tuple(String, String)
       @use_header = header_options["path_option"] == "use_header"
       initialize(@version)
     end
