@@ -24,9 +24,9 @@ module Kave
     #   curl http://localhost:3000/v1/test
     #       vs
     #   curl -H "Accept: application/vnd.api.v1+json" http://localhost:3000/test
-    def path_option=(option : String)
-      if option == "use_header"
-        add_handler Kave::RouteHeaderHandler
+    def path_option=(option : String?)
+      if option == "header"
+        add_handler Kave::RouteHeaderHandler.new
       end 
     end
 

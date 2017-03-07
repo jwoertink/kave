@@ -16,9 +16,8 @@ describe "SampleApp" do
   end
   Spec.after_each do
     Kemal.stop
-    Kemal.config.clear
+    #Kemal.config.clear
   end
-
   
   context "when testing route scopes" do
     it "returns This is a public route" do
@@ -62,7 +61,7 @@ describe "SampleApp" do
     it "succeeds" do
       headers = HTTP::Headers.new
       headers["AUTHORIZATION"] = "Bearer 123"
-      get "v1/users.json", headers: headers
+      get "/v1/users.json", headers: headers
     end
   end
 end
