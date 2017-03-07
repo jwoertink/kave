@@ -22,4 +22,3 @@ api("v3", {"path_option" => "use_header"}) do
   end
 end
 
-Kemal.run

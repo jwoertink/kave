@@ -9,6 +9,16 @@ end
 
 # NOTE: These are specs based on the ./sample_app.cr
 describe "SampleApp" do
+  Spec.before_each do
+    Kemal.config.logging = false
+    Kemal.config.logger = Kemal::NullLogHandler.new
+    Kemal.run
+  end
+  Spec.after_each do
+    Kemal.stop
+    Kemal.config.clear
+  end
+
   
   context "when testing route scopes" do
     it "returns This is a public route" do
