@@ -1,12 +1,13 @@
 module Kave
   class Config
     getter auth_strategy
-    property token_model, format
+    property token_model, format, public_routes
 
     def initialize
       @auth_strategy = nil.as(Symbol?)
       @token_model = Kave::AuthToken
       @format = :json
+      @public_routes = [] of String
     end
 
     def auth_strategy=(new_strategy : Symbol)

@@ -89,7 +89,7 @@ end
 
 To access this route:
 ```text
-$ curl -H "AUTHORIZATION: Bearer abc123" "http://localhost:3000/v1/users/1.json"
+$ curl -H "Authorization: Bearer abc123" "http://localhost:3000/v1/users/1.json"
 ```
 
 ### Path Options

@@ -26,4 +26,9 @@ describe Kave::Config do
   it "has a default format of :json" do
     Kave.configuration.format.should eq :json
   end
+
+  it "adds /check as a public route" do
+    Kave.configure {|c| c.public_routes = ["/check"] }
+    Kave.configuration.public_routes.should eq ["/check"]
+  end
 end
