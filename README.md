@@ -2,8 +2,6 @@
 
 This shards makes it easier to version your [Kemal](http://kemalcr.com/) API
 
-**WARNING:** experimental stage. Things are working, but may change often
-
 ## Installation
 
 Add this to your application's `shard.yml`:
@@ -17,7 +15,6 @@ dependencies:
 
 ## Usage
 
-
 ```crystal
 require "kemal"
 require "kave"
@@ -25,8 +22,9 @@ require "kave"
 Kave.configure do |c|
   # These are default config options
   # c.format = :json                # see Formats below
-  # c.auth_strategy = nil           # see Auth below
-  # c.token_model = Kave::AuthToken # see Auth below
+  # c.auth_strategy = nil           # see Auth Strategy below
+  # c.token_model = Kave::AuthToken # see Auth Strategy below
+  # c.path_option = "header"        # see Path Options below
 end
 
 get "/" do |env|
@@ -92,6 +90,41 @@ end
 To access this route:
 ```text
 $ curl -H "AUTHORIZATION: Bearer abc123" "http://localhost:3000/v1/users/1.json"
+```
+
+### Path Options
+
+ok, so I admit that this is a horrible name for this option, but I can't think of anything better at the moment....
+
+By default, Kave will generate paths for your API by prepending the version to your route like `/v1/whatever.json`. This option gives you the ability to specify your routes like `/whatever.json` and control the version using a header.
+
+```crystal
+Kave.configure do |c|
+  c.path_option = "header"
+end
+
+api("v1") do
+  get "/users" do |env|
+    [{"id" => 1, "name" => "Jeremy"}].to_json
+  end
+end
+```
+
+To access this route:
+```text
+$ curl -H "Accept: application/vnd.api.v1+json" "http://localhost:3000/users.json"
+```
+
+Alternativley, if you want to move your API from a path method to header method in a V2, you could do this.
+
+```crystal
+api("v1") do
+  # uses /v1/whatever.json
+end
+
+api("v2", {"path" => "header"}) do
+  # uses the Accept header method
+end
 ```
 
 ## Development
