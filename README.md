@@ -35,6 +35,13 @@ api("v1") do
   get "/" do |env|
     "This is a private route only accessed through the version 1 API"
   end
+
+  before_post "/check" do |env|
+    "This is called before POST /v1/check.json"
+  end
+  post "/check" do |env|
+    "something here"
+  end
 end
 
 api("v2") do

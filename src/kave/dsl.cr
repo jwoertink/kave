@@ -11,7 +11,7 @@ module Kave
     end
 
     # Copy the same DSL Kemal provides for inside of the API block
-    {% for method in %w(get post put patch delete) %}
+    {% for method in HTTP_METHODS %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
         extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
         path = ["/", version, path, extension].join
@@ -19,6 +19,16 @@ module Kave
       
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
+    {% end %}
+
+    {% for type in ["before", "after"] %}
+      {% for method in FILTER_METHODS %}
+        def {{type.id}}_{{method.id}}(path = "*", &block : HTTP::Server::Context -> _)
+          extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
+          path = ["/", version, path, extension].join
+          Kemal::FilterHandler::INSTANCE.{{type.id}}({{method}}.upcase, path, &block)
+        end
+      {% end %}
     {% end %}
   end
 end
