@@ -17,7 +17,7 @@ module Kave
         path = ["/", version, path, extension].join
         @stored_routes << {path, {{method}}}
       
-        Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
+        Kemal::RouteHandler::INSTANCE.add_http_route({{method}}.upcase, path, &block)
       end
     {% end %}
 

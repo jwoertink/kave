@@ -11,7 +11,6 @@ describe Kave::Config do
   it "assigns the auth_strategy to :bearer" do
     Kave.configure { |c| c.auth_strategy = :bearer }
     Kave.configuration.auth_strategy.should eq :bearer
-    Kemal::Config::HANDLERS.delete_at(4)
   end
 
   it "has a default token_model of Kave::AuthToken" do

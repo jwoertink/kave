@@ -60,8 +60,9 @@ describe "SampleApp" do
 
     it "succeeds" do
       headers = HTTP::Headers.new
-      headers["AUTHORIZATION"] = "Bearer 123"
+      headers["AUTHORIZATION"] = "Bearer 1e2r3t"
       get "/v1/users.json", headers: headers
+      response.status_code.should eq 200
     end
   end
 end
