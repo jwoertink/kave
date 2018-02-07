@@ -1,11 +1,11 @@
 module Kave
   class DSL
-    property version 
+    property version
     property stored_routes = [] of Tuple(String, String)
-    
+
     def initialize(@version : String)
       # Setup before block content_type
-      Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env| 
+      Kemal::FilterHandler::INSTANCE.before("ALL", "*") do |env|
         env.response.content_type = Kave::Format::MAPPING[Kave.configuration.format]["content_type"]
       end
     end
@@ -16,7 +16,7 @@ module Kave
         extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
         path = ["/", version, path, extension].join
         @stored_routes << {path, {{method}}}
-      
+
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
     {% end %}

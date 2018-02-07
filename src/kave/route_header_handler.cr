@@ -1,6 +1,5 @@
 module Kave
   class RouteHeaderHandler < Kemal::Handler
-    
     def call(context)
       if context.request.headers["Accept"]? &&
          context.request.headers["Accept"].match(Kave::ACCEPT_HEADER_REGEX)
@@ -8,6 +7,5 @@ module Kave
       end
       call_next(context)
     end
-
   end
 end

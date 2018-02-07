@@ -21,4 +21,3 @@ api("v3", {"path" => "header"}) do
     "This route uses a header request"
   end
 end
-

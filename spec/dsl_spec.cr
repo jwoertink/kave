@@ -1,7 +1,6 @@
 require "./spec_helper"
 
 describe Kave::DSL do
-  
   it "takes a version" do
     dsl = Kave::DSL.new("v1")
     dsl.version.should eq "v1"

@@ -1,9 +1,9 @@
 module Kave
   class BearerHandler < Kemal::Handler
-    AUTH = "Authorization"
-    AUTH_MESSAGE = "Unauthorized"
+    AUTH                  = "Authorization"
+    AUTH_MESSAGE          = "Unauthorized"
     HEADER_LOGIN_REQUIRED = "Bearer realm=\"Authentication required\""
-    
+
     def call(context)
       return call_next(context) if Kave.configuration.public_routes.includes?(context.request.path)
       if header = context.request.headers[AUTH]?
@@ -15,7 +15,7 @@ module Kave
 
       context.response.status_code = 401
       context.response.headers["WWW-Authenticate"] = HEADER_LOGIN_REQUIRED
-      context.response.print AUTH_MESSAGE 
+      context.response.print AUTH_MESSAGE
     end
 
     def authorized?(token)

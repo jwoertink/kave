@@ -12,12 +12,12 @@ module Kave
 
     def auth_strategy=(new_strategy : Symbol)
       strategy = case new_strategy
-      when :bearer
-        add_handler Kave::BearerHandler.new
-        :bearer
-      else
-        nil
-      end
+                 when :bearer
+                   add_handler Kave::BearerHandler.new
+                   :bearer
+                 else
+                   nil
+                 end
       @auth_strategy = strategy
     end
 
@@ -28,8 +28,7 @@ module Kave
     def path_option=(option : String?)
       if option == "header"
         add_handler Kave::RouteHeaderHandler.new
-      end 
+      end
     end
-
   end
 end

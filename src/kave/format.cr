@@ -1,7 +1,7 @@
 module Kave
   class Format
     MAPPING = {json: json}
-    
+
     def self.json
       {"content_type" => "application/json", "extension" => ".json"}
     end
@@ -9,10 +9,10 @@ module Kave
     def jsonize(obj)
       case obj
       when Array
-        obj.map {|o| jsonize(o)}.as(JSON::Type)
+        obj.map { |o| jsonize(o) }.as(JSON::Type)
       when Hash
         h = {} of String => JSON::Type
-        obj.each {|k, v| h[k] = jsonize(v)}
+        obj.each { |k, v| h[k] = jsonize(v) }
         h.as(JSON::Type)
       when Int32
         obj.to_i64.as(JSON::Type)

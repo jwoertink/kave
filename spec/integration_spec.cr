@@ -16,9 +16,9 @@ describe "SampleApp" do
   end
   Spec.after_each do
     Kemal.stop
-    #Kemal.config.clear
+    # Kemal.config.clear
   end
-  
+
   context "when testing route scopes" do
     it "returns This is a public route" do
       get "/users"
@@ -43,7 +43,6 @@ describe "SampleApp" do
       get "/v4/users.json"
       response.status_code.should eq 404
     end
-
   end
 
   context "when testing bearer handler" do
