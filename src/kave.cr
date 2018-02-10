@@ -1,5 +1,6 @@
 require "./kave/*"
-require "./kave/auth_handlers/*"
+require "./kave/auth_strategy_handlers/*"
+require "./kave/version_strategy_handlers/*"
 
 module Kave
   # TODO: allow other formats like xml, etc...
@@ -21,11 +22,14 @@ module Kave
 end
 
 # Global scope
+
+# Defines the block of routes specific to this `version` api
 def api(version : String)
-  with Kave::DSL.new(version) yield
+  with Kave::ApiDSL.new(version) yield
 end
 
-def api(version : String, header_options : Hash(String, String))
-  Kave.configuration.path_option = header_options["path"]?
-  with Kave::DSL.new(version) yield
+# Defines the block of routes that are public
+# and not bound to the API middleware stack
+def public
+  with Kave::PublicDSL.new yield
 end
