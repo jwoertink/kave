@@ -4,8 +4,15 @@ module Kave
     AUTH_MESSAGE          = "Unauthorized"
     HEADER_LOGIN_REQUIRED = "Bearer realm=\"Authentication required\""
 
+    # Faking the Kemal exclude handler since that runs in a macro and would be empty.
+    # If there's a public route found, just pass through
+    # If there's an Authorization header, and the token is found, then pass through
+    # Otherwise return a 401
     def call(context)
-      return call_next(context) if Kave.configuration.public_routes.includes?(context.request.path)
+      if Kave.configuration.public_routes[context.request.method.upcase].includes?(context.request.path)
+        return call_next(context)
+      end
+
       if header = context.request.headers[AUTH]?
         matched = header.match(/Bearer\s(\w+)$/)
         if matched && $1 && authorized?($1)
