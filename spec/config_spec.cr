@@ -26,7 +26,7 @@ describe Kave::Config do
   end
 
   it "adds /check as a public route" do
-    Kave.configure { |c| c.public_routes = ["/check"] }
-    Kave.configuration.public_routes.should eq ["/check"]
+    Kave.configure { |c| c.public_routes["GET"] = ["/check"] }
+    Kave.configuration.public_routes["GET"].should eq ["/check"]
   end
 end

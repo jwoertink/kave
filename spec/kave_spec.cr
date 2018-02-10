@@ -15,4 +15,15 @@ describe Kave do
       Kave.configuration.format.should eq :json
     end
   end
+
+  describe "ACCEPT_HEADER_REGEX" do
+    it "matches" do
+      "application/vnd.api.v1+json".match(Kave::ACCEPT_HEADER_REGEX)
+      $1.should eq "v1"
+    end
+
+    it "doesn't match" do
+      "application/json".match(Kave::ACCEPT_HEADER_REGEX).should eq nil
+    end
+  end
 end
