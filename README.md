@@ -24,11 +24,13 @@ Kave.configure do |c|
   # c.format = :json                # see Formats below
   # c.auth_strategy = nil           # see Auth Strategy below
   # c.token_model = Kave::AuthToken # see Auth Strategy below
-  # c.path_option = "header"        # see Path Options below
+  # c.version_strategy = :header    # see Version Strategy below
 end
 
-get "/" do |env|
-  "This is a public route"
+public do
+  get "/" do |env|
+    "This is a public route"
+  end
 end
 
 api("v1") do
@@ -99,15 +101,13 @@ To access this route:
 $ curl -H "Authorization: Bearer abc123" "http://localhost:3000/v1/users/1.json"
 ```
 
-### Path Options
+### Version Strategy
 
-ok, so I admit that this is a horrible name for this option, but I can't think of anything better at the moment....
-
-By default, Kave will generate paths for your API by prepending the version to your route like `/v1/whatever.json`. This option gives you the ability to specify your routes like `/whatever.json` and control the version using a header.
+By default, Kave will generate paths for your API by prepending the version to your route like `/v1/whatever.json`. This option gives you the ability to specify your routes like `/whatever.json` and control the version using a header. Later there may be an option like `:subdomain` to do `v1.whatever.com/whatever.json`.
 
 ```crystal
 Kave.configure do |c|
-  c.path_option = "header"
+  c.version_strategy = :header
 end
 
 api("v1") do
@@ -122,17 +122,8 @@ To access this route:
 $ curl -H "Accept: application/vnd.api.v1+json" "http://localhost:3000/users.json"
 ```
 
-Alternativley, if you want to move your API from a path method to header method in a V2, you could do this.
+**NOTE** In a previous version of Kave you were able to change this halfway through. I realized after lots of trail and error that this was going to cause a huge mess. You can't conditionally add middleware. It's either there, or it's not. I may add that back in later if I can come up with some clever way, but until people start asking for that, it's out for now.
 
-```crystal
-api("v1") do
-  # uses /v1/whatever.json
-end
-
-api("v2", {"path" => "header"}) do
-  # uses the Accept header method
-end
-```
 
 ## Development
 
