@@ -1,5 +1,5 @@
 name: kave
-version: 0.2.4
+version: 0.3.0
 
 authors:
   - Jeremy Woertink <jeremywoertink@gmail.com>
@@ -9,7 +9,7 @@ license: MIT
 development_dependencies:
   kemal:
     github: kemalcr/kemal
-    branch: master
+    version: 0.22.0
   spec-kemal:
     github: kemalcr/spec-kemal
-    branch: master
+    version: 0.3.0
