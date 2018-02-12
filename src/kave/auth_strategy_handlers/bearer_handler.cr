@@ -20,9 +20,14 @@ module Kave
         end
       end
 
-      context.response.status_code = 401
-      context.response.headers["WWW-Authenticate"] = HEADER_LOGIN_REQUIRED
-      context.response.print AUTH_MESSAGE
+      if context.route_defined?
+        context.response.status_code = 401
+        context.response.headers["WWW-Authenticate"] = HEADER_LOGIN_REQUIRED
+        context.response.print AUTH_MESSAGE
+      else
+        context.response.status_code = 404
+        call_next(context)
+      end
     end
 
     def authorized?(token)

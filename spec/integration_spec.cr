@@ -55,4 +55,10 @@ describe "SampleApp" do
     response.status_code.should eq 200
     response.body.should eq "This is a private route v2"
   end
+
+  it "overrides for custom 404 response" do
+    get "/not/here"
+    response.status_code.should eq 404
+    response.body.should eq "This page is missing"
+  end
 end

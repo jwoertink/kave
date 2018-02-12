@@ -1,5 +1,9 @@
 ENV["KEMAL_ENV"] = "test"
 
+error 404 do
+  "This page is missing"
+end
+
 public do
   get "/users" do
     "This is a public route"
