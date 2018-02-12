@@ -7,7 +7,7 @@ module Kave
     # Faking the Kemal exclude handler since that runs in a macro and would be empty.
     # If there's a public route found, just pass through
     # If there's an Authorization header, and the token is found, then pass through
-    # Otherwise return a 401
+    # Otherwise return a 401 if the route is defined or 404 and move on
     def call(context)
       if Kave.configuration.public_routes[context.request.method.upcase].includes?(context.request.path)
         return call_next(context)
