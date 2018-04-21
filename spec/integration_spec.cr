@@ -27,7 +27,7 @@ describe "SampleApp" do
   end
 
   it "fails to reach the api without proper headers" do
-    get "/v1/users.json"
+    get "/v1/users"
     response.status_code.should eq 401
     response.body.should eq "Unauthorized"
   end
@@ -35,15 +35,31 @@ describe "SampleApp" do
   it "succeeds when given proper headers for v1" do
     headers = HTTP::Headers.new
     headers["AUTHORIZATION"] = "Bearer 1e2r3t"
-    get "/v1/users.json", headers: headers
+    get "/v1/users", headers: headers
     response.status_code.should eq 200
     response.body.should eq "This is a private route v1"
+  end
+
+  it "succeeds with proper headers for route ending in param" do
+    headers = HTTP::Headers.new
+    headers["AUTHORIZATION"] = "Bearer 1e2r3t"
+    get "/v1/users/1", headers: headers
+    response.status_code.should eq 200
+    response.body.should eq "This is users 1"
+  end
+
+  it "allows for a post" do
+    headers = HTTP::Headers.new
+    headers["AUTHORIZATION"] = "Bearer 1e2r3t"
+    post "/v1/users/1/articles", headers: headers
+    response.status_code.should eq 200
+    response.body.should eq %{{"id":"1"}}
   end
 
   it "fails when given the proper header, but wrong token for v1" do
     headers = HTTP::Headers.new
     headers["AUTHORIZATION"] = "Bearer badtoken"
-    get "/v1/users.json", headers: headers
+    get "/v1/users", headers: headers
     response.status_code.should eq 401
     response.body.should eq "Unauthorized"
   end
@@ -51,7 +67,7 @@ describe "SampleApp" do
   it "succeeds when given proper headers for v2" do
     headers = HTTP::Headers.new
     headers["AUTHORIZATION"] = "Bearer 1e2r3t"
-    get "/v2/users.json", headers: headers
+    get "/v2/users", headers: headers
     response.status_code.should eq 200
     response.body.should eq "This is a private route v2"
   end
