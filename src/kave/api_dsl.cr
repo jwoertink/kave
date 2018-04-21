@@ -13,6 +13,8 @@ module Kave
     {% for method in HTTP_METHODS %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
         path = api_route_for_path(path)
+        Kave.configuration.api_routes[{{method}}.upcase] ||= [] of String
+        Kave.configuration.api_routes[{{method}}.upcase].push(path)
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
     {% end %}
@@ -27,10 +29,14 @@ module Kave
     {% end %}
 
     # Prepends the api version and appends the extension for the path
-    # `/users` => `/v1/users.json`
+    # `/users` => `/v1/users`
     private def api_route_for_path(path)
-      extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
-      path = ["/", version, path, extension].join
+      # Can't use extension because of a routing bug where
+      # /users.json     matches
+      # /users/1.json   won't match
+      # This would require an update to how Radix works
+      #extension = Kave::Format::MAPPING[Kave.configuration.format]["extension"]
+      path = ["/", version, path].join
       path
     end
   end

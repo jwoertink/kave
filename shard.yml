@@ -1,9 +1,11 @@
 name: kave
-version: 0.3.0
+version: 0.3.1
+description: API Versioning for Kemal apps
 
 authors:
   - Jeremy Woertink <jeremywoertink@gmail.com>
 
+crystal: 0.24.2
 license: MIT
 
 development_dependencies:
@@ -12,4 +14,4 @@ development_dependencies:
     version: 0.22.0
   spec-kemal:
     github: kemalcr/spec-kemal
-    version: 0.3.0
+    version: 0.4.0

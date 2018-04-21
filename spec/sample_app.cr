@@ -14,6 +14,14 @@ api("v1") do
   get "/users" do
     "This is a private route v1"
   end
+
+  get "/users/:id" do |env|
+    "This is users #{env.params.url["id"]}"
+  end
+
+  post "/users/:id/articles" do |env|
+    {"id" => env.params.url["id"]}.to_json
+  end
 end
 
 api("v2") do

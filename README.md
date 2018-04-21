@@ -39,7 +39,7 @@ api("v1") do
   end
 
   before_post "/check" do |env|
-    "This is called before POST /v1/check.json"
+    "This is called before POST /v1/check"
   end
   post "/check" do |env|
     "something here"
@@ -70,7 +70,7 @@ api("v1") do
 end
 ```
 
-You would make a call to this route by `http://localhost:3000/v1/users/1.json`
+You would make a call to this route by `http://localhost:3000/v1/users/1`
 
 Additional options later will be `:xml`, `:msgpack`, `:plain`
 
@@ -98,12 +98,12 @@ end
 
 To access this route:
 ```text
-$ curl -H "Authorization: Bearer abc123" "http://localhost:3000/v1/users/1.json"
+$ curl -H "Authorization: Bearer abc123" "http://localhost:3000/v1/users/1"
 ```
 
 ### Version Strategy
 
-By default, Kave will generate paths for your API by prepending the version to your route like `/v1/whatever.json`. This option gives you the ability to specify your routes like `/whatever.json` and control the version using a header. Later there may be an option like `:subdomain` to do `v1.whatever.com/whatever.json`.
+By default, Kave will generate paths for your API by prepending the version to your route like `/v1/whatever`. This option gives you the ability to specify your routes like `/whatever` and control the version using a header. Later there may be an option like `:subdomain` to do `v1.whatever.com/whatever`.
 
 ```crystal
 Kave.configure do |c|
@@ -119,7 +119,7 @@ end
 
 To access this route:
 ```text
-$ curl -H "Accept: application/vnd.api.v1+json" "http://localhost:3000/users.json"
+$ curl -H "Accept: application/vnd.api.v1+json" "http://localhost:3000/users"
 ```
 
 **NOTE** In a previous version of Kave you were able to change this halfway through. I realized after lots of trail and error that this was going to cause a huge mess. You can't conditionally add middleware. It's either there, or it's not. I may add that back in later if I can come up with some clever way, but until people start asking for that, it's out for now.

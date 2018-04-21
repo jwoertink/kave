@@ -10,7 +10,7 @@ describe Kave::ApiDSL do
   {% for method in HTTP_METHODS %}
   it "has a {{method.id}} method" do
     dsl = Kave::ApiDSL.new("v1")
-    dsl.{{method.id}}("/users") { |env| "users" }.should eq nil
+    dsl.{{method.id}}("/posts") { |env| "posts" }.should eq nil
   end
   {% end %}
 
