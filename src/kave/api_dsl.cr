@@ -13,6 +13,8 @@ module Kave
     {% for method in HTTP_METHODS %}
       def {{method.id}}(path : String, &block : HTTP::Server::Context -> _)
         path = api_route_for_path(path)
+        Kave.configuration.api_routes[{{method}}.upcase] ||= [] of String
+        Kave.configuration.api_routes[{{method}}.upcase].push(path)
         Kemal::RouteHandler::INSTANCE.add_route({{method}}.upcase, path, &block)
       end
     {% end %}
