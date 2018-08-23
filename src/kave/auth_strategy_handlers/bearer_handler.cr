@@ -20,7 +20,7 @@ module Kave
         end
       end
 
-      if context.route_defined?
+      if context.route_found?
         context.response.status_code = 401
         context.response.headers["WWW-Authenticate"] = HEADER_LOGIN_REQUIRED
         context.response.print AUTH_MESSAGE
