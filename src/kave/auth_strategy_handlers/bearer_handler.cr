@@ -14,7 +14,7 @@ module Kave
       end
 
       if header = context.request.headers[AUTH]?
-        matched = header.match(/Bearer\s(\w+)$/)
+        matched = header.match(/Bearer\s([A-Za-z0-9\-\._~\+\/]+=*)$/)
         if matched && $1 && authorized?($1)
           return call_next(context)
         end
