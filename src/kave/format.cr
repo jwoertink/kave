@@ -1,9 +1,13 @@
 module Kave
   class Format
-    MAPPING = {json: json}
+    MAPPING = {json: json, msgpack: msgpack}
 
     def self.json
       {"content_type" => "application/json", "extension" => ".json"}
+    end
+
+    def self.msgpack
+      {"content_type" => "application/msgpack"}
     end
 
     def jsonize(obj)
