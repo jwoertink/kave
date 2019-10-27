@@ -1,4 +1,4 @@
-# Kave (Kemal API Version Extension)
+# Kave (Kemal API Version Extension) [![Build Status](https://travis-ci.com/jwoertink/kave.svg?branch=master)](https://travis-ci.com/jwoertink/kave)
 
 This shards makes it easier to version your [Kemal](http://kemalcr.com/) API
 
